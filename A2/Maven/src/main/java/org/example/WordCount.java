@@ -29,8 +29,11 @@ public class WordCount {
         public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
             StringTokenizer itr = new StringTokenizer(value.toString()); // Initialize StringTokenizer with the input text.toString()
             while (itr.hasMoreTokens()) { // While there are more tokens in the input text
-                word.set(String.valueOf(itr.nextToken().toLowerCase().charAt(0))); // Set the word to the next token (word found in the input text)
-                context.write(word, one); // Write the word and the value 1 to the context
+                char firstChar = itr.nextToken().toLowerCase().charAt(0); // Get the first character of the next token
+                if (Character.isAlphabetic(firstChar)) { // If the first character is a letter
+                    word.set(String.valueOf(firstChar)); // Add the first character to the word
+                    context.write(word, one); // Write the word (char) and the value 1 to the context
+                }
             }
         }
     }
